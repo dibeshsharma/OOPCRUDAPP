@@ -10,6 +10,7 @@ $errors = [];
 
 $data = json_decode(file_get_contents('php://input'), true);
 
+$id = $data['crudItems']['id'];
 $item_id = $data['crudItems']['item_id'];
 $date_added = $data['crudItems']['date_added'];
 $item_name = $data['crudItems']['item_name'];
@@ -17,6 +18,7 @@ $item_category = $data['crudItems']['item_category'];
 $item_location = $data['crudItems']['item_location'];
 $item_price = $data['crudItems']['item_price'];
 $available = $data['crudItems']['available'];
+$mode = $data['crudItems']['mode'];
 
 if($available == 'yes'){
     $available = 1;
@@ -24,9 +26,9 @@ if($available == 'yes'){
     $available = 0;
 }
 
-$crudItems = new CrudItems($item_id, $date_added, $item_name, $item_category, $item_location, $item_price, $available);
-$crudItems->save();
-$messages = $crudItems->result;
+$crudItems = new CrudItems($id, $item_id, $date_added, $item_name, $item_category, $item_location, $item_price, $available, $mode);
+$crudItems->save($id);
+$messages = $crudItems->results;
 
 $replyMessage = array(
     'messages'  => $messages,

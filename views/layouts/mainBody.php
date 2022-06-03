@@ -1,5 +1,5 @@
 <!-- This is the main body -->
-<div class="col-md-9">
+
     <?php
     switch ($basename) {
         case 'index.php':
@@ -19,4 +19,3 @@
             break;
     }
     ?>
-</div> 

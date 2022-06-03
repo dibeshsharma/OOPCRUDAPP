@@ -19,6 +19,7 @@ echo "<br/>";
 
 
 ?>
+<div class="col-md-9">
 <div class="row">
 
         <div class="panel panel-default">
@@ -31,6 +32,7 @@ echo "<br/>";
             </div>
         </div>
 
+</div>
 </div>
 
 

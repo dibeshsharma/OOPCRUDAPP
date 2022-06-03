@@ -1,18 +1,17 @@
 <?php 
 namespace Console;
+session_start();
 
 use Exception;
 use Console\Model\CrudItems;
-
 require('Model\CrudItems.php');
-require('templateView.php');
 
-//$item_id = $date_added = $item_name = $item_category = $item_location = $item_price = $available = "";
 $crudItems = new CrudItems();
+$crudItems->set_mode("delete");
+$mode = $crudItems->get_mode();
 
-$root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";    
-$basename = basename($actual_link);
+include('phpScript.php')
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,6 +29,9 @@ $basename = basename($actual_link);
     <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
-    <?php include('views/layouts/app.layout.php'); ?>
+    <?php
+        include('views/layouts/sideBar.php');
+        include('views/items/view.php');
+    ?>
 </body>
 </html>

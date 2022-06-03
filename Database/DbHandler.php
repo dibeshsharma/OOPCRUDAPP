@@ -6,6 +6,7 @@
  */
 
 namespace Console\Database;
+
 use mysqli;
 
 class DbHandler
@@ -17,7 +18,7 @@ class DbHandler
     protected $db_username = 'root';
     protected $db_password = '';
     protected $db_name = 'test';
-    public $result = [];
+    public $results = [];
     public $con = null;
     public $errors = [];
 
@@ -25,20 +26,22 @@ class DbHandler
     {
         $this->con = mysqli_connect($this->db_host, $this->db_username, $this->db_password, $this->db_name);
 
-        if($this->con->connect_errno){
-            $this->result['status'] = "error";
-            $this->result['message']  = $this->con->connect_errno;
+        if ($this->con->connect_errno) {
+
+            $this->results['mode'] = "Db Connection.";
+            $this->results['status'] = "error";
+            $this->results['message']  = $this->con->connect_errno;
             die("Unable to connect database: " . $this->con->connect_errno);
-        }else{
-            $this->result['status'] = "success";
-            $this->result['message']  = "Database connected successfully.";
+        } else {
+            $this->results['mode'] = "Db Connection.";
+            $this->results['status'] = "success";
+            $this->results['message']  = "Database connected successfully.";
         }
     }
 
     public function authenticate($supplied_host, $supplied_username, $supplied_password)
     {
-        if($supplied_host == $this->db_host && $supplied_username == $this->db_username && $supplied_password == $this->db_password)
-        {
+        if ($supplied_host == $this->db_host && $supplied_username == $this->db_username && $supplied_password == $this->db_password) {
             return true;
         } else {
             return false;
@@ -72,46 +75,50 @@ class DbHandler
     }
 
     /**
-    * Perform to retrieve table data in associative array
-    *
-    * Example usage:
-    * echo $dbHandler->getResult( "SELECT `id`, `item_id`, `date_added`, `item_name`, `item_category`, `item_location`, `item_price`, `available` FROM `ds_crud_items` WHERE 1 ORDER BY date_added ASC" );
-    *
-    * @access public
-    * @param string    
-    * @return array
-    *
-    */
-    public function getResult($sqlQuery)
+     * Perform to retrieve table data in associative array
+     *
+     * Example usage:
+     * echo $dbHandler->getresults( "SELECT `id`, `item_id`, `date_added`, `item_name`, `item_category`, `item_location`, `item_price`, `available` FROM `ds_crud_items` WHERE 1 ORDER BY date_added ASC" );
+     *
+     * @access public
+     * @param string    
+     * @return array
+     *
+     */
+    public function getresults($sqlQuery)
     {
-        $result = $this->con->query($sqlQuery);
+        $results = $this->con->query($sqlQuery);
+        $no_of_rows = mysqli_num_rows($results);
 
-        $no_of_rows = mysqli_num_rows($result);
-
-
-
-        if($no_of_rows > 0){
+        if ($no_of_rows > 0) {
             // Associative array
-            $rowAssociative = $result->fetch_all(MYSQLI_ASSOC);
+            $rowAssociative = $results->fetch_all(MYSQLI_ASSOC);
 
-            // Free result set
-            $result -> free_result();
+            // Free results set
+            $results->free_result();
 
-            //echo "NO of rows 1 ".$no_of_rows;
-            //die();
-            
-            // Return the result
+            // Return the results
             return $rowAssociative;
         } else {
-
-            //echo "NO of rows 2 ".$no_of_rows;
-            // die();
-
             $this->errors['status'] = "error";
             $this->errors['message'] = "Sorry! No records exists in the Db.";
             return false;
         }
+    }
 
-
+    public function deleteRecord($sqlQuery)
+    {
+        $results = $this->con->query($sqlQuery);
+        if($results){
+            $this->results['mode'] = "delete";
+            $this->results['status'] = "success";
+            $this->results['message']  = "Data Deleted Successfully.";
+            return true;
+        } else {
+            $this->results['mode'] = "delete";
+            $this->results['status'] = "error";
+            $this->results['message']  = "Data Not Deleted.";
+            return false;
+        }
     }
 }

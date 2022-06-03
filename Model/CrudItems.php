@@ -7,6 +7,7 @@ require('Database\DbHandler.php') ;
 
 class CrudItems
 {
+    private $id;
     private $item_id;
     private $date_added;
     private $item_name;
@@ -14,16 +15,18 @@ class CrudItems
     private $item_location;
     private $item_price;
     private $available;
-    private $dbHandler;
+    public $dbHandler;
+    private $mode;
     public $errors = [];
-    public $result = [];
+    public $results = [];
 
     /*
      * Initialize the property
-     */
+    */
 
-    public function __construct($item_id = "", $date_added = "", $item_name = "", $item_category = "", $item_location = "", $item_price = "", $available = "")
+    public function __construct($id = "", $item_id = "", $date_added = "", $item_name = "", $item_category = "", $item_location = "", $item_price = "", $available = "", $mode = "")
     {
+        $this->id = $id;
         $this->item_id = $item_id;
         $this->date_added = $date_added == "" ? date("Y-m-d") : $date_added;
         $this->item_name = $item_name;
@@ -32,9 +35,14 @@ class CrudItems
         $this->item_price = $item_price;
         $this->available = $available == "" ? 1 : $available;
         $this->dbHandler = new DbHandler();
+        $this->mode = $mode;
         $this->errors = [];
-        $this->result['status'] = "";
-        $this->result['message'] = "";
+        $this->results['status'] = "";
+        $this->results['message'] = "";
+    }
+
+    public function set_id($id){
+        $this->id = $id;
     }
 
     public function set_item_id($item_id){
@@ -65,6 +73,14 @@ class CrudItems
         $this->available = $available;
     }
 
+    public function set_mode($mode){
+        $this->mode = $mode;
+    }
+
+    public function get_id(){
+        return $this->id;
+    }
+
     public function get_item_id(){
         return $this->item_id;
     }
@@ -88,20 +104,23 @@ class CrudItems
         return $this->available;
     }
 
+    public function get_mode(){
+        return $this->mode;
+    }
+
     public function get_all(){
         $sqlQuery = "SELECT `id`, `item_id`, `date_added`, `item_name`, `item_category`, `item_location`, `item_price`, `available` FROM `ds_crud_items` WHERE 1 ORDER BY `date_added`";
-        $rowAssociative = $this->dbHandler->getResult($sqlQuery);
+        $rowAssociative = $this->dbHandler->getresults($sqlQuery);
         return $rowAssociative;
     }
 
-    public function get_id($id){
-        
-        
+    public function get_all_from_id($id){  
             $sqlQuery = "SELECT `id`, `item_id`, `date_added`, `item_name`, `item_category`, `item_location`, `item_price`, `available` FROM `ds_crud_items` WHERE `id`=$id;";
             
-            $rowAssociative = $this->dbHandler->getResult($sqlQuery);
+            $rowAssociative = $this->dbHandler->getresults($sqlQuery);
            if($rowAssociative){
                 foreach ($rowAssociative as $row) {
+                    $this->id = $row['id'];
                     $this->item_id = $row['item_id'];
                     $date_added=date_create($row['date_added']);
                     $this->date_added = date_format($date_added,"Y-m-d");
@@ -109,19 +128,11 @@ class CrudItems
                     $this->item_category = $row['item_category'];
                     $this->item_location = $row['item_location'];
                     $this->item_price = $row['item_price'];
-                    $this->available = $row['available'];
-
-                    // echo "1";
-                    // die();
-                }
+                    $this->available = $row['available'];                    
+                }                
            } else {
                 $this->errors = $this->dbHandler->errors;
-                // var_dump($this->dbHandler->errors);
-                // echo "1";
-                // die();
            }
-
-             
     }
 
     /*
@@ -131,11 +142,9 @@ class CrudItems
      * save to the database
      */
 
-    public function save()
+    public function save($id="null")
     {
-        //$dbHandler = new DbHandler();
-
-        if($this->dbHandler->result['status'] == "success"){
+        if($this->dbHandler->results['status'] == "success"){
             $item_id = $this->dbHandler->sanitize($this->item_id);
             $date_added = $this->dbHandler->sanitize($this->date_added);
             $item_name = $this->dbHandler->sanitize($this->item_name);
@@ -143,23 +152,57 @@ class CrudItems
             $item_location = $this->dbHandler->sanitize($this->item_location);
             $item_price = $this->dbHandler->sanitize($this->item_price);
             $available = $this->dbHandler->sanitize($this->available);
-    
-            if($item_id){
-                $stmt = $this->dbHandler->con->prepare("Insert into ds_crud_items(item_id, date_added, item_name, item_category, item_location, item_price, available) values (?,?,?,?,?,?,?)");
-                $stmt->bind_param("sssssss", $item_id, $date_added, $item_name, $item_category, $item_location, $item_price, $available);
-                
-                if($stmt->execute()){
-                    $this->result['status'] = "success";
-                    $this->result['message'] = "Data inserted successfully.";
-                }else{
-                    $this->result['status'] = "error";
-                    $this->result['message']  = $stmt->error;
-                }
-            } 
+            
+            if($this->mode == "new"){
+                if($item_id){
+                    $stmt = $this->dbHandler->con->prepare("Insert into ds_crud_items(item_id, date_added, item_name, item_category, item_location, item_price, available) values (?,?,?,?,?,?,?)");
+                    $stmt->bind_param("sssssss", $item_id, $date_added, $item_name, $item_category, $item_location, $item_price, $available);
+                    
+                    if($stmt->execute()){
+                        $this->results['mode'] = "new";
+                        $this->results['status'] = "success";
+                        $this->results['message'] = "New Data inserted successfully.";
+                    }else{
+                        $this->results['mode'] = "new";
+                        $this->results['status'] = "error";
+                        $this->results['message']  = $stmt->error;
+                    }
+                } 
+
+            } else if($this->mode == "edit"){
+                if($item_id){
+                    $stmt = $this->dbHandler->con->prepare("Update ds_crud_items set item_id = ?, date_added = ?, item_name =?, item_category = ?, item_location = ?, item_price = ?, available =? where id = $id;");
+                    
+                    $stmt->bind_param("sssssss", $item_id, $date_added, $item_name, $item_category, $item_location, $item_price, $available);
+                    
+                    if($stmt->execute()){
+                        $this->results['mode'] = "edit";
+                        $this->results['status'] = "success";
+                        $this->results['message'] = "Data edited successfully for Item Id : $this->item_id.";
+                    }else{
+                        $this->results['mode'] = "edit";
+                        $this->results['status'] = "error";
+                        $this->results['message']  = $stmt->error;
+                    }
+                } 
+
+            } else {
+                $this->results['mode'] = "undefined";
+                $this->results['status'] = "error";
+                $this->results['message']  = "Mode is not defined.";
+            }
+            
+
         } else {
-            $this->result['status'] = $this->dbHandler->result['status'];
-            $this->result['message']  = $this->dbHandler->result['message'];
+            $this->results['status'] = $this->dbHandler->results['status'];
+            $this->results['message']  = $this->dbHandler->results['message'];
         }
     }
+
+    public function deleteRecord($id){
+        $sqlQuery = "DELETE FROM `ds_crud_items` WHERE `id` = $id";
+        $this->dbHandler->deleteRecord($sqlQuery);
+        $this->results = $this->dbHandler->results;
+        return json_encode($this->results);
+    }
 }
-?>
