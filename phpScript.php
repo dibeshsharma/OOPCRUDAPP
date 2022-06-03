@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Item Id Field is Required";        
     } else {
         $item_id = $crudItems->dbHandler->sanitize($_POST["item_id"]);
-        // $crudItems->set_item_id($item_id);
+        $crudItems->set_item_id($item_id);
     }
 
     // date_added
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Date Added Field is Required";        
     } else {
         $date_added = $crudItems->dbHandler->sanitize($_POST["date_added"]);
-        // $crudItems->set_date_added($date_added);
+        $crudItems->set_date_added($date_added);
     }
 
     // item_name
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Item Name Field is Required";        
     } else {
         $item_name = $crudItems->dbHandler->sanitize($_POST["item_name"]);
-        // $crudItems->set_item_name($item_name);
+        $crudItems->set_item_name($item_name);
     }
 
     // item_category
@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Item Category Field is Required";        
     } else {
         $item_category = $crudItems->dbHandler->sanitize($_POST["item_category"]);
-        // $crudItems->set_item_category($item_category);
+        $crudItems->set_item_category($item_category);
     }
 
     // item_location
@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Item Location Field is Required";        
     } else {
         $item_location = $crudItems->dbHandler->sanitize($_POST["item_location"]);
-        // $crudItems->set_item_location($item_location);
+        $crudItems->set_item_location($item_location);
     }
 
     // item_price
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Item Price Field is Required";        
     } else {
         $item_price = $crudItems->dbHandler->sanitize($_POST["item_price"]);
-        // $crudItems->set_item_price($item_price);
+        $crudItems->set_item_price($item_price);
     }
 
     // available
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Available Field is Required";        
     } else {
         $available = $crudItems->dbHandler->sanitize($_POST["available"]);
-        // $crudItems->set_available($available);
+        $crudItems->set_available($available);
     }
 
     if(!empty($errors)){    
