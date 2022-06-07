@@ -28,6 +28,12 @@
         <?php 
         if(!empty($items)){
           foreach ($items as $item) {
+
+            if($item['available'] == "1"){
+              $item['available'] ="Yes";
+            }else{
+              $item['available'] = "No";
+            }           
             echo "<tr>";
               echo "<td>".$item['id']."</td>";
               echo "<td>".$item['item_id']."</td>";
@@ -42,9 +48,9 @@
               echo " ";
               echo "<a href=$root"."local/Console/delete.php?id=".$item['id']." class=\"btn btn-danger\"".">Delete</a>";
               echo "</td>";
+              echo "</tr>";
           } 
-        }
-  
+        }  
         ?>
       </table>
     </div>

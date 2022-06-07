@@ -20,7 +20,7 @@ $mode = $crudItems->get_mode();
                 <form role="form" method="post" action="" class="col-md-6 col-md-offset-3">
                     <fieldset>
                         <div class="form-group">
-                            <h4>PHP Forms for Developers</h4>
+                            <h4>King - Add Crud Items</h4>
                         </div>
                         <div class="form-group">
                         <input class="form-control" placeholder="id" name="id" type="number" autofocus value="<?php echo $id; ?>">

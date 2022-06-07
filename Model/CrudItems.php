@@ -162,10 +162,16 @@ class CrudItems
                         $this->results['mode'] = "new";
                         $this->results['status'] = "success";
                         $this->results['message'] = "New Data inserted successfully.";
+                        $this->results['id'] = $this->id;
+                        $this->results['item_id'] = $this->item_id;
+                        $this->results['item_name'] = $this->item_name;
                     }else{
                         $this->results['mode'] = "new";
                         $this->results['status'] = "error";
                         $this->results['message']  = $stmt->error;
+                        $this->results['id'] = $this->id;
+                        $this->results['item_id'] = $this->item_id;
+                        $this->results['item_name'] = $this->item_name;
                     }
                 } 
 
@@ -178,11 +184,21 @@ class CrudItems
                     if($stmt->execute()){
                         $this->results['mode'] = "edit";
                         $this->results['status'] = "success";
-                        $this->results['message'] = "Data edited successfully for Item Id : $this->item_id.";
+                        $this->results['message'] = "Data edited successfully.";
+                        $this->results['id'] = $this->id;
+                        $this->results['item_id'] = $this->item_id;
+                        $this->results['item_name'] = $this->item_name;
                     }else{
                         $this->results['mode'] = "edit";
                         $this->results['status'] = "error";
                         $this->results['message']  = $stmt->error;
+                        $this->results['id'] = $this->id;
+                        $this->results['item_id'] = $this->item_id;
+                        $this->results['item_name'] = $this->item_name;
+                        // old value
+                        $this->results['old_item_id'] = $this->item_id;
+                        $this->results['item_name'] = $this->item_name;
+
                     }
                 } 
 
@@ -200,9 +216,13 @@ class CrudItems
     }
 
     public function deleteRecord($id){
+        $this->get_all_from_id($id);
         $sqlQuery = "DELETE FROM `ds_crud_items` WHERE `id` = $id";
         $this->dbHandler->deleteRecord($sqlQuery);
         $this->results = $this->dbHandler->results;
+        $this->results['id'] = $this->id;
+        $this->results['item_id'] = $this->item_id;
+        $this->results['item_name'] = $this->item_name;
         return json_encode($this->results);
     }
 }

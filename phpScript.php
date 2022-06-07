@@ -1,13 +1,19 @@
 <?php 
 use Console\Model\CrudItems;
 
+//check if session has started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $errors = [];
 $response = [];
 
 if($mode == 'delete'){
+    echo $crudItems->get_id();
     $id = $_GET['id'];
     $response = $crudItems->deleteRecord($id); 
-    $_SESSION['delete'] = $response;  
+    $_SESSION['response'] = $response;
 }
 
 if($mode == 'edit'){
@@ -113,10 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ); 
 
         // Get the server side response
-        $response = submitForm($postData);        
-        $responseArray = json_decode($response, TRUE);        
-        $_SESSION['response'] = $responseArray;
-        $mode = $responseArray['messages']['mode'];
+        $response = submitForm($postData);
+        $_SESSION['response'] = $response;
+        
         if($mode == "new"){
             //Reset the form
             $crudItems = new CrudItems();
@@ -130,13 +135,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-
-// function $crudItems->dbHandler->sanitize($data) {
-//   $data = trim($data);
-//   $data = stripslashes($data);
-//   $data = htmlspecialchars($data);
-//   return $data;
-// }
 
 function submitForm($postData)
 {

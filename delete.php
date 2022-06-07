@@ -10,8 +10,7 @@ $crudItems = new CrudItems();
 $crudItems->set_mode("delete");
 $mode = $crudItems->get_mode();
 
-include('phpScript.php')
-
+include('phpScript.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -28,16 +28,8 @@ if($available == 'yes'){
 
 $crudItems = new CrudItems($id, $item_id, $date_added, $item_name, $item_category, $item_location, $item_price, $available, $mode);
 $crudItems->save($id);
-$messages = $crudItems->results;
-
-$replyMessage = array(
-    'messages'  => $messages,
-    'data' => $data
-);
-
-$replyMessageJson = json_encode($replyMessage);
-
-echo $replyMessageJson;
+$results = $crudItems->results;
+echo json_encode($results);
 ?>
 
 
