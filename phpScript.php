@@ -18,7 +18,22 @@ if($mode == 'delete'){
 
 if($mode == 'edit'){
     $id = $_GET['id'];
-    $crudItems->get_all_from_id($id);    
+    $crudItems->get_all_from_id($id); 
+    // For edit items only
+    // Add the old data to the json encode
+    $old_id = $crudItems->get_id();
+    $old_item_id = $crudItems->get_item_id();
+    $old_date_added = $crudItems->get_date_added();
+    $old_item_name = $crudItems->get_item_name(); 
+    $old_item_category = $crudItems->get_item_category();
+    $old_item_location = $crudItems->get_item_location();
+    $old_item_price = $crudItems->get_item_price(); 
+    $old_available = $crudItems->get_available();
+    if($old_available == 1){
+        $old_available = "Yes";
+    } else {
+        $old_available = "No";
+    }
 }
 
 $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
@@ -120,6 +135,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Get the server side response
         $response = submitForm($postData);
+
+
+        $responseEdit = json_decode($response, true);
+        
+        
+        if($responseEdit['mode'] == "edit"){            
+            $responseEdit['oldData'] = [
+                'old_id' => $old_id, 
+                'old_item_id' => $old_item_id,
+                'old_date_added' =>$old_date_added, 
+                'old_item_name' => $old_item_name, 
+                'old_item_category' => $old_item_category, 
+                'old_item_location' => $old_item_location, 
+                'old_item_price' => $old_item_price, 
+                'old_available' => $old_available, 
+            ];
+            $response = json_encode($responseEdit);
+        } 
+
         $_SESSION['response'] = $response;
         
         if($mode == "new"){
@@ -129,8 +163,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else if($mode == "edit") {
             header("Location: show.php");
             die();
-        } else {
+        } else if($mode == "delete") {
             header("Location: show.php");
+            exit();
+        } else {
+            header("Location: default.php");
             exit();
         }
     }
@@ -138,7 +175,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 function submitForm($postData)
 {
-    
     $url = 'http://localhost/local/Console/process.php'; 
     try{
       $ch = curl_init();

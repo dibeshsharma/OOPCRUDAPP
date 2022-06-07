@@ -33,7 +33,7 @@ class CrudItems
         $this->item_category = $item_category;
         $this->item_location = $item_location;
         $this->item_price = $item_price;
-        $this->available = $available == "" ? 1 : $available;
+        $this->available = $available == "" ? "yes" : $available;
         $this->dbHandler = new DbHandler();
         $this->mode = $mode;
         $this->errors = [];
@@ -152,6 +152,12 @@ class CrudItems
             $item_location = $this->dbHandler->sanitize($this->item_location);
             $item_price = $this->dbHandler->sanitize($this->item_price);
             $available = $this->dbHandler->sanitize($this->available);
+
+            if($available == "yes"){
+                $available = 1;
+            } else{
+                $available = 0;
+            }
             
             if($this->mode == "new"){
                 if($item_id){
@@ -162,20 +168,24 @@ class CrudItems
                         $this->results['mode'] = "new";
                         $this->results['status'] = "success";
                         $this->results['message'] = "New Data inserted successfully.";
-                        $this->results['id'] = $this->id;
-                        $this->results['item_id'] = $this->item_id;
-                        $this->results['item_name'] = $this->item_name;
+
                     }else{
                         $this->results['mode'] = "new";
                         $this->results['status'] = "error";
                         $this->results['message']  = $stmt->error;
-                        $this->results['id'] = $this->id;
-                        $this->results['item_id'] = $this->item_id;
-                        $this->results['item_name'] = $this->item_name;
                     }
+                    $this->results['id'] = $this->id;
+                    $this->results['item_id'] = $this->item_id;
+                    $this->results['date_added'] = $this->date_added;
+                    $this->results['item_name'] = $this->item_name;
+                    $this->results['item_category'] = $this->item_category;
+                    $this->results['item_location'] = $this->item_location;
+                    $this->results['item_price'] = $this->item_price;
+                    $this->results['available'] = $this->available;
                 } 
 
             } else if($this->mode == "edit"){
+                
                 if($item_id){
                     $stmt = $this->dbHandler->con->prepare("Update ds_crud_items set item_id = ?, date_added = ?, item_name =?, item_category = ?, item_location = ?, item_price = ?, available =? where id = $id;");
                     
@@ -185,21 +195,19 @@ class CrudItems
                         $this->results['mode'] = "edit";
                         $this->results['status'] = "success";
                         $this->results['message'] = "Data edited successfully.";
-                        $this->results['id'] = $this->id;
-                        $this->results['item_id'] = $this->item_id;
-                        $this->results['item_name'] = $this->item_name;
                     }else{
                         $this->results['mode'] = "edit";
                         $this->results['status'] = "error";
                         $this->results['message']  = $stmt->error;
-                        $this->results['id'] = $this->id;
-                        $this->results['item_id'] = $this->item_id;
-                        $this->results['item_name'] = $this->item_name;
-                        // old value
-                        $this->results['old_item_id'] = $this->item_id;
-                        $this->results['item_name'] = $this->item_name;
-
                     }
+                    $this->results['id'] = $this->id;
+                    $this->results['item_id'] = $this->item_id;
+                    $this->results['date_added'] = $this->date_added;
+                    $this->results['item_name'] = $this->item_name;
+                    $this->results['item_category'] = $this->item_category;
+                    $this->results['item_location'] = $this->item_location;
+                    $this->results['item_price'] = $this->item_price;
+                    $this->results['available'] = $this->available;
                 } 
 
             } else {
@@ -207,7 +215,6 @@ class CrudItems
                 $this->results['status'] = "error";
                 $this->results['message']  = "Mode is not defined.";
             }
-            
 
         } else {
             $this->results['status'] = $this->dbHandler->results['status'];
@@ -216,13 +223,22 @@ class CrudItems
     }
 
     public function deleteRecord($id){
+        // To set the properties for the record
         $this->get_all_from_id($id);
-        $sqlQuery = "DELETE FROM `ds_crud_items` WHERE `id` = $id";
-        $this->dbHandler->deleteRecord($sqlQuery);
+
+        // Delete the item from the record
+        $sqlQuery = "DELETE FROM `ds_crud_items` WHERE `id` = $id";        
+        $this->dbHandler->deleteRecord($sqlQuery);        
         $this->results = $this->dbHandler->results;
+
         $this->results['id'] = $this->id;
         $this->results['item_id'] = $this->item_id;
+        $this->results['date_added'] = $this->date_added;
         $this->results['item_name'] = $this->item_name;
+        $this->results['item_category'] = $this->item_category;
+        $this->results['item_location'] = $this->item_location;
+        $this->results['item_price'] = $this->item_price;
+        $this->results['available'] = $this->available = 1 ? "yes" : "no";
         return json_encode($this->results);
     }
 }

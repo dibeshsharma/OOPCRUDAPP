@@ -26,9 +26,8 @@ echo "<br/>";
             <div class="panel-heading">
                 <h4>Default Page</h4>
             </div>
-            <div class="panel-body">
-            <?php include('messageDiv.php'); ?>
-               Default page <?php echo $id; ?>
+            <div class="panel-body">            
+               This is the Default page. 
             </div>
         </div>
 

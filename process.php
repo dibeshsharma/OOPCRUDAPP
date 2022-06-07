@@ -20,12 +20,6 @@ $item_price = $data['crudItems']['item_price'];
 $available = $data['crudItems']['available'];
 $mode = $data['crudItems']['mode'];
 
-if($available == 'yes'){
-    $available = 1;
-} else{
-    $available = 0;
-}
-
 $crudItems = new CrudItems($id, $item_id, $date_added, $item_name, $item_category, $item_location, $item_price, $available, $mode);
 $crudItems->save($id);
 $results = $crudItems->results;
