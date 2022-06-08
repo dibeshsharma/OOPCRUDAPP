@@ -32,7 +32,8 @@ class CrudItems
         $this->item_name = $item_name;
         $this->item_category = $item_category;
         $this->item_location = $item_location;
-        $this->item_price = $item_price;
+        // $this->item_price = $item_price;
+        $this->item_price = number_format((float)$item_price, 2, '.', '');
         $this->available = $available == "" ? "yes" : $available;
         $this->dbHandler = new DbHandler();
         $this->mode = $mode;
@@ -66,7 +67,7 @@ class CrudItems
     }
 
     public function set_item_price($item_price){
-        $this->item_price = $item_price;
+        $this->item_price = number_format((float)$item_price, 2, '.', '');
     }
 
     public function set_available($available){

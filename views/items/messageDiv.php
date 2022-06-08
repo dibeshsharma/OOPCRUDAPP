@@ -1,12 +1,15 @@
-<div class="row">
-<?php     
+<?php 
+if(!empty($errors) || !empty($_SESSION['response'])){ 
+echo "<div class=\"row\">";
+echo "<div class=\"col-md-10 col-md-offset-1\">";   
     //Error messages for empty form feilds
     if(!empty($errors)){ 
         echo "<div class='alert alert-danger'>";
+            echo "<p>Please fix the errors below.</p>";
             echo "<ul>";
-            foreach ($errors as $error) {
-                echo "<li>".$error."</li>";
-            }
+                foreach ($errors as $error) {
+                    echo "<li>".$error."</li>";
+                }
             echo "</ul>";
         echo "</div>"; 
     }        
@@ -17,45 +20,50 @@
         $response = json_decode($response); // this is an object 
         if(isset($response->status)){
             if($response->status == 'success'){
-                echo "<div class='alert alert-success'>";
-                echo $response->message;               
-                if($response->mode == "edit"){                    
-                    echo "<ul>";         
-                        // echo "<li>"."Id : ".$response->oldData->old_id." changed to ".$response->id.".". "</li>"; 
-                        echo "<li>"."Item id : ".$response->oldData->old_item_id." changed to ".$response->item_id.".". "</li>"; 
-                        echo "<li>"."Date Added : ".$response->oldData->old_date_added." changed to ".$response->date_added.".". "</li>";                        
-                        echo "<li>"."Item Name : ".$response->oldData->old_item_name." changed to ".$response->item_name.".". "</li>";                         
-                        echo "<li>"."Item Category : ".$response->oldData->old_item_category." changed to ".$response->item_category.".". "</li>";
-                        echo "<li>"."Item Location : ".$response->oldData->old_item_location." changed to ".$response->item_location.".". "</li>";
-                        echo "<li>"."Item Price : ".$response->oldData->old_item_price." changed to ".$response->item_price.".". "</li>";
-                        echo "<li>"."Item Available : ".$response->oldData->old_available." changed to ".ucfirst($response->available).".". "</li>";
-                    echo "</ul>";
-
-                } else {
+               
+                if($response->mode == "edit"){
+                    echo "<div class='alert alert-success'>";
+                        echo $response->message;                    
+                        echo "<ul>";         
+                            // echo "<li>"."Id : ".$response->oldData->old_id." changed to ".$response->id.".". "</li>"; 
+                            echo "<li>"."Item id : <strong>".$response->oldData->old_item_id."</strong> changed to <strong>".$response->item_id."</strong>.". "</li>"; 
+                            echo "<li>"."Date Added : <strong>".$response->oldData->old_date_added."</strong> changed to <strong>".$response->date_added."</strong>.". "</li>";                        
+                            echo "<li>"."Item Name : <strong>".$response->oldData->old_item_name."</strong> changed to <strong>".$response->item_name."</strong>.". "</li>";                         
+                            echo "<li>"."Item Category : <strong>".$response->oldData->old_item_category."</strong> changed to <strong>".$response->item_category."</strong>.". "</li>";
+                            echo "<li>"."Item Location : <strong>".$response->oldData->old_item_location."</strong> changed to <strong>".$response->item_location."</strong>.". "</li>";
+                            echo "<li>"."Item Price : <strong>".$response->oldData->old_item_price."</strong> changed to <strong>".$response->item_price."</strong>.". "</li>";
+                            echo "<li>"."Item Available : <strong>".$response->oldData->old_available."</strong> changed to <strong>".ucfirst($response->available)."</strong>.". "</li>";
+                        echo "</ul>";
+                    echo "</div>";
+                } else{
+                    echo "<div class='alert alert-info'>";
+                    echo $response->message; 
                     echo "<ul>"; 
                         // echo "<li>"."Id : ".$response->id."</li>";         
-                        echo "<li>"."Item Id : ".$response->item_id."</li>"; 
-                        echo "<li>"."Date Added : ".$response->date_added."</li>";  
-                        echo "<li>"."Item Name : ".$response->item_name."</li>";  
-                        echo "<li>"."Item Category : ".$response->item_category."</li>";
-                        echo "<li>"."Item Location : ".$response->item_location."</li>";    
-                        echo "<li>"."Item Price : ".$response->item_price."</li>";  
-                        echo "<li>"."Item Available : ".ucfirst($response->available)."</li>";
-                        echo "</ul>";
+                        echo "<li>"."Item Id : <strong>".$response->item_id."</strong></li>"; 
+                        echo "<li>"."Date Added : <strong>".$response->date_added."</strong></li>";  
+                        echo "<li>"."Item Name : <strong>".$response->item_name."</strong></li>";  
+                        echo "<li>"."Item Category : <strong>".$response->item_category."</strong></li>";
+                        echo "<li>"."Item Location : <strong>".$response->item_location."</strong></li>";    
+                        echo "<li>"."Item Price : <strong>".$response->item_price."</strong></li>";  
+                        echo "<li>"."Item Available : <strong>".ucfirst($response->available)."</strong></li>";
+                    echo "</ul>";
+                    echo "</div>";
                 }
-
-            echo "</div>"; 
+             
             } else {
                 echo "<div class='alert alert-danger'>";
                 echo $response->message;
                 echo "<ul>";         
-                    echo "<li>"."Item Id : ".$response->item_id."</li>";  
-                    echo "<li>"."Item Name : ".$response->item_name."</li>";       
+                    echo "<li>"."Item Id : <strong>".$response->item_id."</strong></li>";  
+                    echo "<li>"."Item Name : <strong>".$response->item_name."</strong></li>";       
                 echo "</ul>";
                 echo "</div>"; 
             }
         }        
         unset($_SESSION['response']);
     }
+echo "</div>";
+echo "</div>";
+}
 ?>
-</div>

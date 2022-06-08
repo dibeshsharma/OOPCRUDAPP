@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $crudItems->set_id($_POST["id"]);
                 break;
             default:
-                $errors[] = "Wrong Mode";
+                $errors[] = "Wrong Mode! The form has not been submitted.";
             break;
         }
     }
@@ -103,9 +103,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // item_price
     if (empty($_POST["item_price"])) {
-        $errors[] = "Item Price Field is Required";        
+        $errors[] = "Item Price Field is Required";
     } else {
+        if($_POST["item_price"] == 0){
+            $errors[] = "Item Price Field Value must be greater than 0.00";
+        }
         $item_price = $crudItems->dbHandler->sanitize($_POST["item_price"]);
+        // echo $item_price;
+        // die();
         $crudItems->set_item_price($item_price);
     }
 
@@ -135,10 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Get the server side response
         $response = submitForm($postData);
-
-
-        $responseEdit = json_decode($response, true);
-        
+        $responseEdit = json_decode($response, true);        
         
         if($responseEdit['mode'] == "edit"){            
             $responseEdit['oldData'] = [
