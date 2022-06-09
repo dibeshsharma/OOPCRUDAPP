@@ -26,4 +26,5 @@ $end = end($pathFragments);
 echo $path;
 var_dump($pathFragments);
 echo $end;
+// next to work on templating
 ?>
