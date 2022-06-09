@@ -10,6 +10,7 @@ $crudItems->set_mode("new");
 $mode = $crudItems->get_mode();
 
 include('phpScript.php');
+include('urlScript.php');
 ?>
 
 <!DOCTYPE html>

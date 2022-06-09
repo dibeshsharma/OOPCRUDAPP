@@ -8,12 +8,13 @@ $item_location = $crudItems->get_item_location();
 $item_price = $crudItems->get_item_price();
 $available = $crudItems->get_available();
 $mode = $crudItems->get_mode();
+$formAction = $pathinfo == "index" ? "Add Items" : "Edit Items";
 ?>
 <div class="col-md-9">
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Add Items</h4>
+                <h4><?php echo $formAction; ?></h4>
             </div>
             <div class="panel-body">
                 <?php include('messageDiv.php'); ?>
@@ -76,7 +77,7 @@ $mode = $crudItems->get_mode();
                                                                             } ?>> No
                         </div>
                         <div class="form-group">
-                            <input type="submit" class="btn btn-lg btn-success btn-block" value="Submit" name="submit" />
+                            <input type="submit" class="btn btn-lg btn-success btn-block" value="<?php echo $formAction; ?>" name="submit" />
                         </div>
                         
                     </fieldset>

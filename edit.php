@@ -11,6 +11,7 @@ $crudItems->set_mode("edit");
 $mode = $crudItems->get_mode();
 
 include('phpScript.php');
+include('urlScript.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,9 +29,6 @@ include('phpScript.php');
     <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
-    <?php
-        include('views/layouts/sideBar.php');
-        include('views/items/create.php');
-    ?>
+    <?php include('views/layouts/app.layout.php'); ?>
 </body>
 </html>

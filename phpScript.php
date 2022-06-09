@@ -9,36 +9,43 @@ if (session_status() === PHP_SESSION_NONE) {
 $errors = [];
 $response = [];
 
-if($mode == 'delete'){
-    echo $crudItems->get_id();
-    $id = $_GET['id'];
-    $response = $crudItems->deleteRecord($id); 
-    $_SESSION['response'] = $response;
-}
-
 if($mode == 'edit'){
-    $id = $_GET['id'];
-    $crudItems->get_all_from_id($id); 
     // For edit items only
     // Add the old data to the json encode
-    $old_id = $crudItems->get_id();
-    $old_item_id = $crudItems->get_item_id();
-    $old_date_added = $crudItems->get_date_added();
-    $old_item_name = $crudItems->get_item_name(); 
-    $old_item_category = $crudItems->get_item_category();
-    $old_item_location = $crudItems->get_item_location();
-    $old_item_price = $crudItems->get_item_price(); 
-    $old_available = $crudItems->get_available();
-    if($old_available == 1){
-        $old_available = "Yes";
-    } else {
-        $old_available = "No";
+    $id = isset($_GET['id']) ? $_GET['id'] : "null";
+    $results = $crudItems->get_all_from_id($id); 
+    if($results['status'] == "success"){
+        $old_id = $crudItems->get_id();
+        $old_item_id = $crudItems->get_item_id();
+        $old_date_added = $crudItems->get_date_added();
+        $old_item_name = $crudItems->get_item_name(); 
+        $old_item_category = $crudItems->get_item_category();
+        $old_item_location = $crudItems->get_item_location();
+        $old_item_price = $crudItems->get_item_price(); 
+        $old_available = $crudItems->get_available();
+        if($old_available == 1){
+            $old_available = "Yes";
+        } else {
+            $old_available = "No";
+        }    
+    } else {            
+        $errors['mode'] = $results['mode'];
+        $errors['status'] = $results['status'];
+        $errors['message'][] = $results['message'];        
     }
 }
 
-$root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";    
-$basename = basename($actual_link);
+if($mode == 'delete'){
+    $id = $_GET['id'];
+    $results = $crudItems->deleteRecord($id);
+    if($results['status'] == "success"){
+        $_SESSION['response'] = $results;
+    } else {
+        $errors['mode'] = $results['mode'];
+        $errors['status'] = $results['status'];
+        $errors['message'][] = $results['message'];
+    }    
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -55,7 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $crudItems->set_id($_POST["id"]);
                 break;
             default:
-                $errors[] = "Wrong Mode! The form has not been submitted.";
+            $errors['mode'] = "Invalid Mode";
+            $errors['status'] = "error";
+            $errors['message'][] = "The current mode is not valid";
             break;
         }
     }
@@ -63,7 +72,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // item_id
     // set the item id to show old value in the form
     if (empty($_POST["item_id"])) {
-        $errors[] = "Item Id Field is Required";        
+        $errors['mode'] = "Initial check";
+        $errors['status'] = "error";
+        $errors['message']['item_id'] = "Item Id Field is Required";
     } else {
         $item_id = $crudItems->dbHandler->sanitize($_POST["item_id"]);
         $crudItems->set_item_id($item_id);
@@ -71,7 +82,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // date_added
     if (empty($_POST["date_added"])) {
-        $errors[] = "Date Added Field is Required";        
+        $errors['mode'] = "Initial check";
+        $errors['status'] = "error";
+        $errors['message']['date_added'] = "Date Added Field is Required";        
     } else {
         $date_added = $crudItems->dbHandler->sanitize($_POST["date_added"]);
         $crudItems->set_date_added($date_added);
@@ -79,7 +92,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // item_name
     if (empty($_POST["item_name"])) {
-        $errors[] = "Item Name Field is Required";        
+        $errors['mode'] = "Initial check";
+        $errors['status'] = "error";
+        $errors['message']['item_name'] = "Item Name Field is Required";        
     } else {
         $item_name = $crudItems->dbHandler->sanitize($_POST["item_name"]);
         $crudItems->set_item_name($item_name);
@@ -87,7 +102,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // item_category
     if (empty($_POST["item_category"])) {
-        $errors[] = "Item Category Field is Required";        
+        $errors['mode'] = "Initial check";
+        $errors['status'] = "error";
+        $errors['message']['item_category'] = "Item Category Field is Required";        
     } else {
         $item_category = $crudItems->dbHandler->sanitize($_POST["item_category"]);
         $crudItems->set_item_category($item_category);
@@ -95,7 +112,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // item_location
     if (empty($_POST["item_location"])) {
-        $errors[] = "Item Location Field is Required";        
+        $errors['mode'] = "Initial check";
+        $errors['status'] = "error";
+        $errors['message']['item_location'] = "Item Location Field is Required";        
     } else {
         $item_location = $crudItems->dbHandler->sanitize($_POST["item_location"]);
         $crudItems->set_item_location($item_location);
@@ -103,10 +122,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // item_price
     if (empty($_POST["item_price"])) {
-        $errors[] = "Item Price Field is Required";
+        $errors['mode'] = "Initial check";
+        $errors['status'] = "error";
+        $errors['message']['item_price'] = "Item Price Field is Required";
     } else {
         if($_POST["item_price"] == 0){
-            $errors[] = "Item Price Field Value must be greater than 0.00";
+            $errors['message']['item_price'] = "Item Price Field Value must be greater than 0.00";
         }
         $item_price = $crudItems->dbHandler->sanitize($_POST["item_price"]);
         // echo $item_price;
@@ -116,7 +137,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // available
     if (empty($_POST["available"])) {
-        $errors[] = "Available Field is Required";        
+        $errors['mode'] = "Initial check";
+        $errors['status'] = "error";
+        $errors['message']['available'] = "Available Field is Required";        
     } else {
         $available = $crudItems->dbHandler->sanitize($_POST["available"]);
         $crudItems->set_available($available);
@@ -124,7 +147,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if(!empty($errors)){    
         $errors = $errors; 
-        $messages = [];   
     } else {    
         $postData = array(
             "id" => $id,
@@ -140,10 +162,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Get the server side response
         $response = submitForm($postData);
-        $responseEdit = json_decode($response, true);        
         
-        if($responseEdit['mode'] == "edit"){            
-            $responseEdit['oldData'] = [
+        //convert json to array
+        $response = json_decode($response, true); 
+        
+        // for edit add old values
+        if($response['mode'] == "edit"){            
+            $response['oldData'] = [
                 'old_id' => $old_id, 
                 'old_item_id' => $old_item_id,
                 'old_date_added' =>$old_date_added, 
@@ -153,18 +178,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'old_item_price' => $old_item_price, 
                 'old_available' => $old_available, 
             ];
-            $response = json_encode($responseEdit);
+           $response = $response;
         } 
 
         $_SESSION['response'] = $response;
-        
-        if($mode == "new"){
+       
+        if($mode == "new"){ 
             //Reset the form
             $crudItems = new CrudItems();
             $crudItems->set_mode("new");
+            if($response['status']=="success"){
+                header("Location: show.php");
+                exit();
+            }
         } else if($mode == "edit") {
             header("Location: show.php");
-            die();
+            exit();
         } else if($mode == "delete") {
             header("Location: show.php");
             exit();
@@ -205,4 +234,5 @@ function submitForm($postData)
     curl_close($ch); 
     return $response;
 }
-?>
+
+

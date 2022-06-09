@@ -7,29 +7,35 @@
 		<div class="panel-body"> 
 			<ul class="nav flex-column">
 				<?php
-					switch ($basename) {
-						case 'index.php':
+					switch ($pathinfo) {
+						case 'index':
+							$addItemsLink = "active";
+							$showItemsLink = "";
 							echo "<li class=\"nav-item\">";
-							echo "<a href=$root"."local/Console/index.php"." class=\"nav-link active\"".">Add Items</a>";
+							echo "<a href=$root"."local/Console/index.php"." class=\"nav-link $addItemsLink\"".">Add Items</a>";
 							echo "</li>";
 							echo "<li class=\"nav-item\">";
-							echo "<a href=$root"."local/Console/show.php"." class=\"nav-link\"".">View Items</a>";
+							echo "<a href=$root"."local/Console/show.php"." class=\"nav-link $showItemsLink\"".">View Items</a>";
 							echo "</li>";
 							break;
-						case 'show.php':
+						case 'show':
+							$addItemsLink = "";
+							$showItemsLink = "active";
 							echo "<li class=\"nav-item\">";
-							echo "<a href=$root"."local/Console/index.php"." class=\"nav-link\"".">Add Items</a>";
+							echo "<a href=$root"."local/Console/index.php"." class=\"nav-link  $addItemsLink\"".">Add Items</a>";
 							echo "</li>";
 							echo "<li class=\"nav-item\">";
-							echo "<a href=$root"."local/Console/show.php"." class=\"nav-link active\"".">View Items</a>";
-							echo "</li>";
-								break;        
+							echo "<a href=$root"."local/Console/show.php"." class=\"nav-link $showItemsLink\"".">View Items</a>";
+							echo "</li>"; 
+							break; 
 						default:
+							$addItemsLink = "";
+							$showItemsLink = "";
 							echo "<li class=\"nav-item\">";
-							echo "<a href=$root"."local/Console/index.php"." class=\"nav-link active\"".">Add Items</a>";
+							echo "<a href=$root"."local/Console/index.php"." class=\"nav-link $addItemsLink\"".">Add Items</a>";
 							echo "</li>";
 							echo "<li class=\"nav-item\">";
-							echo "<a href=$root"."local/Console/show.php"." class=\"nav-link\"".">View Items</a>";
+							echo "<a href=$root"."local/Console/show.php"." class=\"nav-link $showItemsLink\"".">View Items</a>";
 							echo "</li>";
 							break;
 					}

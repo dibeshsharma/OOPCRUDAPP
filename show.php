@@ -10,9 +10,7 @@ require('Model\CrudItems.php');
 //$item_id = $date_added = $item_name = $item_category = $item_location = $item_price = $available = "";
 $crudItems = new CrudItems();
 
-$root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";    
-$basename = basename($actual_link);
+include('urlScript.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +21,7 @@ $basename = basename($actual_link);
     <title>Document</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custom.css">
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->

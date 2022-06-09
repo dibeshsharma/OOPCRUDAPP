@@ -1,5 +1,5 @@
 <?php
-$items = $crudItems->get_all();
+$results = $crudItems->get_all();
 ?>
 <div class="col-md-9">
   <div class="panel panel-default">
@@ -8,12 +8,12 @@ $items = $crudItems->get_all();
     </div>
     <div class="panel-body">
       <?php include('messageDiv.php') ?>
-      <?php if (!empty($items)) { ?>
+      <?php if ($results['status'] == "success") { ?>
         <div class="row">
           <table class="table table-striped table-bordered table-hover">
             <tr>
               <th>Id</th>
-              <th>Item Id</th>
+              <th>ITEM ID</th>
               <th>Created Date</th>
               <th>Item Name</th>
               <th>Item Category</th>
@@ -23,7 +23,8 @@ $items = $crudItems->get_all();
               <th>Action</th>
             </tr>
             <?php
-            foreach ($items as $item) {
+            $i = 1;
+            foreach ($results['data'] as $item) {
 
               if ($item['available'] == "1") {
                 $item['available'] = "Yes";
@@ -31,7 +32,7 @@ $items = $crudItems->get_all();
                 $item['available'] = "No";
               }
               echo "<tr>";
-              echo "<td>" . $item['id'] . "</td>";
+              echo "<td>" . $i. "</td>";
               echo "<td>" . $item['item_id'] . "</td>";
               echo "<td>" . $item['date_added'] . "</td>";
               echo "<td>" . $item['item_name'] . "</td>";
@@ -44,7 +45,13 @@ $items = $crudItems->get_all();
               echo " ";
               echo "<a href=$root" . "local/Console/delete.php?id=" . $item['id'] . " class=\"btn btn-danger\"" . ">Delete</a>";
               echo "</td>";
+              echo "<td>";
+              echo "<a href=$root" . "local/Console/edit/" . $item['id'] . " class=\"btn btn-warning\"" . ">Edit</a>";
+              echo " ";
+              echo "<a href=$root" . "local/Console/delete/" . $item['id'] . " class=\"btn btn-danger\"" . ">Delete</a>";
+              echo "</td>";
               echo "</tr>";
+              $i++;
             }
             ?>
           </table>

@@ -28,14 +28,14 @@ class DbHandler
 
         if ($this->con->connect_errno) {
 
-            $this->results['mode'] = "Db Connection.";
+            $this->results['mode'] = "Db Connection";
             $this->results['status'] = "error";
             $this->results['message']  = $this->con->connect_errno;
             die("Unable to connect database: " . $this->con->connect_errno);
         } else {
-            $this->results['mode'] = "Db Connection.";
+            $this->results['mode'] = "Db Connection";
             $this->results['status'] = "success";
-            $this->results['message']  = "Database connected successfully.";
+            $this->results['message']  = "Database connected successfully";
         }
     }
 
@@ -74,6 +74,22 @@ class DbHandler
         return $email;
     }
 
+    public function check_id($id, $table){
+        $sqlQuery = "SELECT id FROM ".$table." WHERE id = $id"; 
+        $results = $this->con->query($sqlQuery);
+        $no_of_rows = mysqli_num_rows($results);        
+        if ($no_of_rows > 0) {
+            $this->results['mode'] = "ID Check";
+            $this->results['status'] = "success";
+            $this->results['message'] = "The id exists";
+        } else {
+            $this->results['mode'] = "ID Check";
+            $this->results['status'] = "error";
+            $this->results['message'] = "The id does not exist";
+        }
+        return $this->results;
+    }
+
     /**
      * Perform to retrieve table data in associative array
      *
@@ -98,12 +114,17 @@ class DbHandler
             $results->free_result();
 
             // Return the results
-            return $rowAssociative;
+            $this->results['mode'] = "Db getresults";
+            $this->results['status'] = "success";
+            $this->results['message']  = "Data retrieved Successfully";
+            $this->results['data'] = $rowAssociative;
         } else {
-            $this->errors['status'] = "error";
-            $this->errors['message'] = "Sorry! No records exists in the Db.";
-            return false;
+            $this->results['mode'] = "Db getresults";
+            $this->results['status'] = "error";
+            $this->results['message'] = "Sorry! No records exists in the Db"; 
+            $this->results['data'] = null;           
         }
+        return $this->results;
     }
 
     public function deleteRecord($sqlQuery)
@@ -112,13 +133,12 @@ class DbHandler
         if($results){
             $this->results['mode'] = "delete";
             $this->results['status'] = "success";
-            $this->results['message']  = "Data Deleted Successfully.";
-            return true;
+            $this->results['message']  = "Data Deleted Successfully";
         } else {
             $this->results['mode'] = "delete";
             $this->results['status'] = "error";
-            $this->results['message']  = "Data Not Deleted.";
-            return false;
+            $this->results['message']  = "Data Not Deleted";
         }
+        return $this->results;
     }
 }

@@ -4,20 +4,35 @@ echo "<div class=\"row\">";
 echo "<div class=\"col-md-10 col-md-offset-1\">";   
     //Error messages for empty form feilds
     if(!empty($errors)){ 
+        $errors = json_encode($errors); 
+        //convert array to json object
+       $errors = json_decode($errors); 
         echo "<div class='alert alert-danger'>";
             echo "<p>Please fix the errors below.</p>";
-            echo "<ul>";
-                foreach ($errors as $error) {
+            echo "<ul>";                
+                foreach ($errors->message as $error) {
                     echo "<li>".$error."</li>";
                 }
             echo "</ul>";
         echo "</div>"; 
+        $errors = [];
     }        
     
-    // $response is an object
+    
     if(!empty($_SESSION['response'])){ 
-        $response = $_SESSION['response'];       
-        $response = json_decode($response); // this is an object 
+        // this is an array
+        // array( 
+        //   'status' => string 'success'
+        //   'message' => string 'message'
+        // )
+
+        $response = $_SESSION['response']; 
+            
+        $response = json_encode($response); 
+
+         //convert array to json object
+        $response = json_decode($response); 
+
         if(isset($response->status)){
             if($response->status == 'success'){
                

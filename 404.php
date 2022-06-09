@@ -1,17 +1,6 @@
 <?php 
-namespace Console;
-session_start();
-
-use Exception;
-use Console\Model\CrudItems;
-require('Model\CrudItems.php');
-
-$crudItems = new CrudItems();
-$crudItems->set_mode("delete");
-$mode = $crudItems->get_mode();
-
-include('phpScript.php');
-include('urlScript.php');
+    namespace Console;
+    include('urlScript.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,3 +21,5 @@ include('urlScript.php');
     <?php include('views/layouts/app.layout.php'); ?>
 </body>
 </html>
+
+
