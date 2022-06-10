@@ -35,8 +35,14 @@ echo "<div class=\"col-md-10 col-md-offset-1\">";
 
         if(isset($response->status)){
             if($response->status == 'success'){
-               
+
+                $response->date_added = date_create($response->date_added);
+                $response->date_added = date_format($response->date_added,"d/m/Y"); 
+
                 if($response->mode == "edit"){
+                    // only edit have oldData in response
+                    $response->oldData->old_date_added = date_create($response->oldData->old_date_added);
+                    $response->oldData->old_date_added = date_format($response->oldData->old_date_added,"d/m/Y");
                     echo "<div class='alert alert-success'>";
                         echo $response->message;                    
                         echo "<ul>";         

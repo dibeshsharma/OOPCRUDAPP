@@ -50,9 +50,11 @@ if($mode == 'delete'){
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($_POST["mode"])) {
-        $errors[] = "Mode Field is Required";        
+        $errors['mode'] = "Initial check";
+        $errors['status'] = "error";
+        $errors['message']['mode'] = "Mode Field is Required";
     } else {
-        $mode = $crudItems->dbHandler->sanitize($_POST["mode"]);
+        $mode = $crudItems->dbHandler->sanitize($_POST["mode"]);        
         switch ($mode) {
             case 'new':                
                 $id = null;
@@ -123,15 +125,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // item_price
     if (empty($_POST["item_price"])) {
         $errors['mode'] = "Initial check";
-        $errors['status'] = "error";
+        $errors['status'] = "error"; 
         $errors['message']['item_price'] = "Item Price Field is Required";
-    } else {
-        if($_POST["item_price"] == 0){
-            $errors['message']['item_price'] = "Item Price Field Value must be greater than 0.00";
-        }
+    } else if($_POST["item_price"] == 0) { 
+        $errors['mode'] = "Initial check";
+        $errors['status'] = "error"; 
+        $errors['message']['item_price'] = "Item Price Field must be greater than 0.00"; 
+    }else {
         $item_price = $crudItems->dbHandler->sanitize($_POST["item_price"]);
-        // echo $item_price;
-        // die();
         $crudItems->set_item_price($item_price);
     }
 
@@ -146,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if(!empty($errors)){    
-        $errors = $errors; 
+        $errors = $errors;
     } else {    
         $postData = array(
             "id" => $id,

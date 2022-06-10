@@ -1,4 +1,5 @@
 <?php
+namespace Console;
 
 $results = [];
 $results['mode'] = "undefined";
@@ -26,5 +27,12 @@ $end = end($pathFragments);
 echo $path;
 var_dump($pathFragments);
 echo $end;
-// next to work on templating
+// crud test
+
+use Console\Model\CrudItems;
+require('Model\CrudItems.php');
+
+$crudItems = new CrudItems();
+
+
 ?>

@@ -14,13 +14,13 @@ $results = $crudItems->get_all();
             <tr>
               <th>Id</th>
               <th>ITEM ID</th>
-              <th>Created Date</th>
-              <th>Item Name</th>
-              <th>Item Category</th>
-              <th>Item Location</th>
-              <th>Item Price</th>
-              <th>Available</th>
-              <th>Action</th>
+              <th>CREATED DATE</th>
+              <th>ITEM NAME</th>
+              <th>ITEM CATEGORY</th>
+              <th>ITEM LOCATION</th>
+              <th>ITEM PRICE</th>
+              <th>AVAILABLE</th>
+              <th>ACTION</th>
             </tr>
             <?php
             $i = 1;
@@ -31,10 +31,12 @@ $results = $crudItems->get_all();
               } else {
                 $item['available'] = "No";
               }
+              $date_added = date_create($item['date_added']);
+              $date_added = date_format($date_added,"d/m/Y");
               echo "<tr>";
               echo "<td>" . $i. "</td>";
               echo "<td>" . $item['item_id'] . "</td>";
-              echo "<td>" . $item['date_added'] . "</td>";
+              echo "<td>" . $date_added . "</td>";
               echo "<td>" . $item['item_name'] . "</td>";
               echo "<td>" . $item['item_category'] . "</td>";
               echo "<td>" . $item['item_location'] . "</td>";
@@ -44,11 +46,6 @@ $results = $crudItems->get_all();
               echo "<a href=$root" . "local/Console/edit.php?id=" . $item['id'] . " class=\"btn btn-warning\"" . ">Edit</a>";
               echo " ";
               echo "<a href=$root" . "local/Console/delete.php?id=" . $item['id'] . " class=\"btn btn-danger\"" . ">Delete</a>";
-              echo "</td>";
-              echo "<td>";
-              echo "<a href=$root" . "local/Console/edit/" . $item['id'] . " class=\"btn btn-warning\"" . ">Edit</a>";
-              echo " ";
-              echo "<a href=$root" . "local/Console/delete/" . $item['id'] . " class=\"btn btn-danger\"" . ">Delete</a>";
               echo "</td>";
               echo "</tr>";
               $i++;

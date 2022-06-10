@@ -25,9 +25,10 @@ class CrudItems
      * Initialize the property
     */
 
-    public function __construct($id = "", $item_id = "", $date_added = "", $item_name = "", $item_category = "", $item_location = "", $item_price = "", $available = "", $mode = "")
+    public function __construct($id = "", $mode = "", $item_id = "", $date_added = "", $item_name = "", $item_category = "", $item_location = "", $item_price = "", $available = "")
     {
         $this->id = $id;
+        $this->mode = $mode;
         $this->item_id = $item_id;
         $this->date_added = $date_added == "" ? date("Y-m-d") : $date_added;
         $this->item_name = $item_name;
@@ -36,8 +37,7 @@ class CrudItems
         // $this->item_price = $item_price;
         $this->item_price = number_format((float)$item_price, 2, '.', '');
         $this->available = $available == "" ? "yes" : $available;
-        $this->dbHandler = new DbHandler();
-        $this->mode = $mode;
+        $this->dbHandler = new DbHandler();        
         $this->errors = [];
         $this->results['status'] = "";
         $this->results['message'] = "";
@@ -102,6 +102,8 @@ class CrudItems
     {
         return $this->date_added;
     }
+
+
     public function get_item_name()
     {
         return $this->item_name;
@@ -235,7 +237,9 @@ class CrudItems
                     }
                     $this->results['id'] = $this->id;
                     $this->results['item_id'] = $this->item_id;
+                    
                     $this->results['date_added'] = $this->date_added;
+
                     $this->results['item_name'] = $this->item_name;
                     $this->results['item_category'] = $this->item_category;
                     $this->results['item_location'] = $this->item_location;

@@ -6,8 +6,6 @@ use Exception;
 use Console\Model\CrudItems;
 
 require('Model\CrudItems.php');
-
-//$item_id = $date_added = $item_name = $item_category = $item_location = $item_price = $available = "";
 $crudItems = new CrudItems();
 
 include('urlScript.php');

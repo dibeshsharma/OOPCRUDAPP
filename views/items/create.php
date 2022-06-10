@@ -1,5 +1,6 @@
 <?php
 $id = $crudItems->get_id();
+$mode = $crudItems->get_mode();
 $item_id = $crudItems->get_item_id();
 $date_added = $crudItems->get_date_added();
 $item_name = $crudItems->get_item_name();
@@ -7,7 +8,6 @@ $item_category = $crudItems->get_item_category();
 $item_location = $crudItems->get_item_location();
 $item_price = $crudItems->get_item_price();
 $available = $crudItems->get_available();
-$mode = $crudItems->get_mode();
 $formAction = $pathinfo == "index" ? "Add Items" : "Edit Items";
 ?>
 <div class="col-md-9">
