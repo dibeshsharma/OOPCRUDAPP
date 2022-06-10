@@ -3,6 +3,7 @@
 namespace Console\Model;
 
 use Console\Database\DbHandler;
+use Exception;
 
 require('Database\DbHandler.php');
 
