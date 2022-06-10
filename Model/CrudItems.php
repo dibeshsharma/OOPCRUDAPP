@@ -18,7 +18,6 @@ class CrudItems
     private $available;
     public $dbHandler;
     private $mode;
-    public $errors = [];
     public $results = [];
 
     /*
@@ -37,8 +36,7 @@ class CrudItems
         // $this->item_price = $item_price;
         $this->item_price = number_format((float)$item_price, 2, '.', '');
         $this->available = $available == "" ? "yes" : $available;
-        $this->dbHandler = new DbHandler();        
-        $this->errors = [];
+        $this->dbHandler = new DbHandler();
         $this->results['status'] = "";
         $this->results['message'] = "";
     }
@@ -103,23 +101,26 @@ class CrudItems
         return $this->date_added;
     }
 
-
     public function get_item_name()
     {
         return $this->item_name;
     }
+
     public function get_item_category()
     {
         return $this->item_category;
     }
+
     public function get_item_location()
     {
         return $this->item_location;
     }
+
     public function get_item_price()
     {
         return $this->item_price;
     }
+
     public function get_available()
     {
         return $this->available;
@@ -236,10 +237,8 @@ class CrudItems
                         $this->results['message']  = $stmt->error;
                     }
                     $this->results['id'] = $this->id;
-                    $this->results['item_id'] = $this->item_id;
-                    
+                    $this->results['item_id'] = $this->item_id;                    
                     $this->results['date_added'] = $this->date_added;
-
                     $this->results['item_name'] = $this->item_name;
                     $this->results['item_category'] = $this->item_category;
                     $this->results['item_location'] = $this->item_location;

@@ -31,6 +31,11 @@ $results = $crudItems->get_all();
               } else {
                 $item['available'] = "No";
               }
+
+              $category_name = $categories->get_category_name_from_id($item['item_category']);
+              $location_name = $locations->get_location_name_from_id($item['item_location']);                   
+
+
               $date_added = date_create($item['date_added']);
               $date_added = date_format($date_added,"d/m/Y");
               echo "<tr>";
@@ -38,8 +43,8 @@ $results = $crudItems->get_all();
               echo "<td>" . $item['item_id'] . "</td>";
               echo "<td>" . $date_added . "</td>";
               echo "<td>" . $item['item_name'] . "</td>";
-              echo "<td>" . $item['item_category'] . "</td>";
-              echo "<td>" . $item['item_location'] . "</td>";
+              echo "<td>" . $category_name . "</td>";
+              echo "<td>" . $location_name . "</td>";
               echo "<td>" . $item['item_price'] . "</td>";
               echo "<td>" . $item['available'] . "</td>";
               echo "<td>";

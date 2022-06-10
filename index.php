@@ -3,11 +3,18 @@ namespace Console;
 
 use Exception;
 use Console\Model\CrudItems;
+use Console\Model\Locations;
+use Console\Model\Categories;
 require('Model\CrudItems.php');
+require('Model\Locations.php');
+require('Model\Categories.php');
 
 $crudItems = new CrudItems();
 $crudItems->set_mode("new");
 $mode = $crudItems->get_mode();
+
+$locations = new Locations();
+$categories = new Categories();
 
 include('phpScript.php');
 include('urlScript.php');

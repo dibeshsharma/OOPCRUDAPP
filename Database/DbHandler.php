@@ -20,7 +20,6 @@ class DbHandler
     protected $db_name = 'test';
     public $results = [];
     public $con = null;
-    public $errors = [];
 
     public function __construct()
     {

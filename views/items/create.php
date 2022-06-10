@@ -9,6 +9,8 @@ $item_location = $crudItems->get_item_location();
 $item_price = $crudItems->get_item_price();
 $available = $crudItems->get_available();
 $formAction = $pathinfo == "index" ? "Add Items" : "Edit Items";
+$locations = $locations->get_all(); // $locations = new Locations();
+$categories = $categories->get_all(); // $categories = new Categories();
 ?>
 <div class="col-md-9">
     <div class="row">
@@ -38,30 +40,35 @@ $formAction = $pathinfo == "index" ? "Add Items" : "Edit Items";
                         </div>
                         <div class="form-group">
                             <select name="item_category" class="form-control">
-                                <option value="" <?php if ($item_category == "") {
-                                                        echo 'selected';
-                                                    } ?>>Select Your Category</option>
-                                <option value="category_01" <?php if ($item_category == "category_01") {
-                                                                echo 'selected';
-                                                            } ?>>category_01</option>
-                                <option value="category_02" <?php if ($item_category == "category_02") {
-                                                                echo 'selected';
-                                                            } ?>>category_02</option>
+                                <option value=""> Select Your Category</option>
+                                <?php
+                                    foreach ($categories['data'] as $category) { 
+                                        if($category['id'] == $item_category ){
+                                            $selected = "selected";
+                                        } else {
+                                            $selected = "";
+                                        }
+                                        echo "<option value =$category[id] $selected >" . $category['category'] . "</option>";                                        
+                                    }
+                                ?>
                             </select>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                             <select name="item_location" class="form-control">
-                                <option value="" <?php if ($item_location == "") {
-                                                        echo 'selected';
-                                                    } ?>>Select Your Location</option>
-                                <option value="location_01" <?php if ($item_location == "location_01") {
-                                                                echo 'selected';
-                                                            } ?>>location_01</option>
-                                <option value="location_02" <?php if ($item_location == "location_02") {
-                                                                echo 'selected';
-                                                            } ?>>location_02</option>
+                                <option value=""> Select Your Location</option>
+                                <?php
+                                    foreach ($locations['data'] as $location) { 
+                                        if($location['id'] == $item_location ){
+                                            $selected = "selected";
+                                        } else {
+                                            $selected = "";
+                                        }
+                                        echo "<option value =$location[id] $selected >" . $location['location'] . "</option>";                                        
+                                    }
+                                ?>
                             </select>
                         </div>
+
                         <div class="form-group">
                             <input class="form-control" placeholder="0.00" name="item_price" type="number" step="0.01" value="<?php echo $item_price; ?>">
                         </div>
