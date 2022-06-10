@@ -4,7 +4,6 @@
  * Programmer/Web Developer
  * Dibesh Sharma <https://github.com/dibeshsharma>
  */
-
 namespace Console\Database;
 
 use mysqli;

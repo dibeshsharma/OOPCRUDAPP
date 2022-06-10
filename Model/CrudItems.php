@@ -26,7 +26,7 @@ class CrudItems
 
     public function __construct($id = "", $mode = "", $item_id = "", $date_added = "", $item_name = "", $item_category = "", $item_location = "", $item_price = "", $available = "")
     {
-        $this->id = $id;
+        $this->id = $id;        
         $this->mode = $mode;
         $this->item_id = $item_id;
         $this->date_added = $date_added == "" ? date("Y-m-d") : $date_added;
@@ -168,6 +168,18 @@ class CrudItems
             }
         }
         return $results;
+    }
+
+    public function uniqidReal($lenght = 13) {
+        // uniqid gives 13 chars, but you could adjust it to your needs.
+        if (function_exists("random_bytes")) {
+            $bytes = random_bytes(ceil($lenght / 2));
+        } elseif (function_exists("openssl_random_pseudo_bytes")) {
+            $bytes = openssl_random_pseudo_bytes(ceil($lenght / 2));
+        } else {
+            throw new Exception("no cryptographically secure random function available");
+        }
+        return substr(bin2hex($bytes), 0, $lenght);
     }
 
     /*

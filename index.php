@@ -11,6 +11,7 @@ require('Model\Categories.php');
 
 $crudItems = new CrudItems();
 $crudItems->set_mode("new");
+$crudItems->set_item_id($crudItems->uniqidReal());
 $mode = $crudItems->get_mode();
 
 $locations = new Locations();

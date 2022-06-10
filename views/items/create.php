@@ -30,7 +30,7 @@ $categories = $categories->get_all(); // $categories = new Categories();
                         <input class="form-control" placeholder="Form Mode" name="mode" type="hidden" value="<?php echo $mode; ?>">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Item Id" name="item_id" type="text" autofocus value="<?php echo $item_id; ?>">
+                            <input class="form-control" placeholder="Item Id" name="item_id" type="text" autofocus value="<?php echo $item_id; ?>" readonly>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="<?php echo date("d/m/Y") ?>" name="date_added" type="date" value="<?php echo $date_added; ?>">

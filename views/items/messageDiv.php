@@ -47,11 +47,9 @@ echo "<div class=\"col-md-10 col-md-offset-1\">";
                     $response->oldData->old_date_added = date_format($response->oldData->old_date_added,"d/m/Y");
                     $old_category_name = $categories->get_category_name_from_id($response->oldData->old_item_category);
                     $old_location_name = $locations->get_location_name_from_id($response->oldData->old_item_location);
-                    echo "<div class='alert alert-success'>";
-                        echo $response->message;                    
-                        echo "<ul>";         
-                            // echo "<li>"."Id : ".$response->oldData->old_id." changed to ".$response->id.".". "</li>"; 
-                            echo "<li>"."Item id : <strong>".$response->oldData->old_item_id."</strong> changed to <strong>".$response->item_id."</strong>.". "</li>"; 
+                    echo "<div class='alert alert-success'>";                        
+                        echo $response->message. " [" ."<strong>Item Id : ".$response->item_id."</strong>"."]";             
+                        echo "<ul>";
                             echo "<li>"."Date Added : <strong>".$response->oldData->old_date_added."</strong> changed to <strong>".$response->date_added."</strong>.". "</li>";                        
                             echo "<li>"."Item Name : <strong>".$response->oldData->old_item_name."</strong> changed to <strong>".$response->item_name."</strong>.". "</li>";                         
                             echo "<li>"."Item Category : <strong>".$old_category_name."</strong> changed to <strong>".$category_name."</strong>.". "</li>";
@@ -62,10 +60,8 @@ echo "<div class=\"col-md-10 col-md-offset-1\">";
                     echo "</div>";
                 } else{
                     echo "<div class='alert alert-info'>";
-                    echo $response->message; 
-                    echo "<ul>"; 
-                        // echo "<li>"."Id : ".$response->id."</li>";         
-                        echo "<li>"."Item Id : <strong>".$response->item_id."</strong></li>"; 
+                    echo $response->message. " [" ."<strong>Item Id : ".$response->item_id."</strong>"."]";
+                    echo "<ul>";                        
                         echo "<li>"."Date Added : <strong>".$response->date_added."</strong></li>";  
                         echo "<li>"."Item Name : <strong>".$response->item_name."</strong></li>";  
                         echo "<li>"."Item Category : <strong>".$category_name."</strong></li>";
@@ -79,10 +75,6 @@ echo "<div class=\"col-md-10 col-md-offset-1\">";
             } else {
                 echo "<div class='alert alert-danger'>";
                 echo $response->message;
-                echo "<ul>";         
-                    echo "<li>"."Item Id : <strong>".$response->item_id."</strong></li>";  
-                    echo "<li>"."Item Name : <strong>".$response->item_name."</strong></li>";       
-                echo "</ul>";
                 echo "</div>"; 
             }
         }        
