@@ -236,9 +236,9 @@ class CrudItems
                 $results = $this->check_if_id_exists($id);
 
                 if ($results) {
-                    $stmt = $this->dbHandler->con->prepare("Update ds_crud_items set item_id = ?, date_added = ?, item_name =?, item_category = ?, item_location = ?, item_price = ?, available =? where id = $id;");
+                    $stmt = $this->dbHandler->con->prepare("Update ds_crud_items set date_added = ?, item_name =?, item_category = ?, item_location = ?, item_price = ?, available =? where id = $id;");
 
-                    $stmt->bind_param("sssssss", $item_id, $date_added, $item_name, $item_category, $item_location, $item_price, $available);
+                    $stmt->bind_param("ssssss", $date_added, $item_name, $item_category, $item_location, $item_price, $available);
 
                     if ($stmt->execute()) {
                         $this->results['mode'] = "edit";
