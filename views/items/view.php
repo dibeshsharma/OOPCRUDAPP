@@ -48,9 +48,9 @@ $results = $crudItems->get_all();
               echo "<td>" . $item['item_price'] . "</td>";
               echo "<td>" . $item['available'] . "</td>";
               echo "<td>";
-              echo "<a href=$root" . "local/Console/edit.php?id=" . $item['id'] . " class=\"btn btn-warning\"" . ">Edit</a>";
+              echo "<a href= $root" . "OOPCRUDAPP/edit.php?id=" . $item['id'] . " class=\"btn btn-warning\"" . ">Edit</a>";
               echo " ";
-              echo "<a href=$root" . "local/Console/delete.php?id=" . $item['id'] . " class=\"btn btn-danger\"" . ">Delete</a>";
+              echo "<a href=$root" . "OOPCRUDAPP/delete.php?id=" . $item['id'] . " class=\"btn btn-danger\"" . ">Delete</a>";
               echo "</td>";
               echo "</tr>";
               $i++;
@@ -60,7 +60,7 @@ $results = $crudItems->get_all();
         </div>
       <?php } else { ?>
         <div class="row text-center">
-          <p><strong>The list is empty. Please add the items. <a href="http://localhost/local/Console/index.php">Add Items</a></strong></p>
+          <p><strong>The list is empty. Please add the items. <a href=<?php echo $root."OOPCRUDAPP\index.php"; ?>>Add Items</a></strong></p>
         </div>
       <?php } ?>
     </div>

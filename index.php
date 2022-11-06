@@ -17,8 +17,9 @@ $mode = $crudItems->get_mode();
 $locations = new Locations();
 $categories = new Categories();
 
-include('phpScript.php');
 include('urlScript.php');
+include('phpScript.php');
+
 ?>
 
 <!DOCTYPE html>

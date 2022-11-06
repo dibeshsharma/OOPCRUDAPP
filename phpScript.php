@@ -167,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //convert json to array
         $response = json_decode($response, true); 
         
-        // for edit add old values
+        // for edit add old values        
         if($response['mode'] == "edit"){            
             $response['oldData'] = [
                 'old_id' => $old_id, 
@@ -207,7 +207,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 function submitForm($postData)
 {
-    $url = 'http://localhost/local/Console/process.php'; 
+    $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+    $url = $root."OOPCRUDAPP/process.php";
     try{
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_URL, $url);						

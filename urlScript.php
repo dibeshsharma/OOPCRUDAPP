@@ -4,4 +4,15 @@
     $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";    
     $basename = basename($actual_link);
     $pathinfo =   pathinfo($actual_link, PATHINFO_FILENAME);
+    $siteUrl = $root."OOPCRUDAPP/";
+
+    // echo $root;
+    // echo "<br/>";
+    // echo $actual_link;
+    // echo "<br/>";
+    // echo $basename;
+    // echo "<br/>";
+    // echo $pathinfo;
+    // echo "<br/>";
+    // echo $root."OOPCRUDAPP/"
 ?>
