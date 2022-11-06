@@ -289,6 +289,8 @@ class CrudItems
             
             // Delete the item from the record
             $sqlQuery = "DELETE FROM `ds_crud_items` WHERE `id` = $id";
+            // echo $sqlQuery;
+            // die();
 
             $results = $this->dbHandler->deleteRecord($sqlQuery);
             $this->results = $results;
