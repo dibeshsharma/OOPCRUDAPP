@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2022 at 04:20 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 7.4.28
+-- Generation Time: Nov 06, 2022 at 07:56 AM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 8.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,37 @@ SET time_zone = "+00:00";
 --
 -- Database: `test`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `citycount` (IN `country` CHAR(3), OUT `cities` INT)  BEGIN
+         SELECT COUNT(*) INTO cities FROM world.city
+         WHERE CountryCode = country;
+       END$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ds_crud_categories`
+--
+
+CREATE TABLE `ds_crud_categories` (
+  `id` int(11) NOT NULL,
+  `category` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ds_crud_categories`
+--
+
+INSERT INTO `ds_crud_categories` (`id`, `category`) VALUES
+(1, 'Master Item'),
+(2, 'Child Item'),
+(3, 'Flock Item');
 
 -- --------------------------------------------------------
 
@@ -43,33 +74,27 @@ CREATE TABLE `ds_crud_items` (
 --
 
 INSERT INTO `ds_crud_items` (`id`, `item_id`, `date_added`, `item_name`, `item_category`, `item_location`, `item_price`, `available`) VALUES
-(111, '0', '2022-06-07 00:00:00', 'item name 23', 'category_01', 'location_02', '45.00', 1),
-(112, '0', '2022-06-07 00:00:00', 'item name 23', 'category_01', 'location_01', '48.00', 1),
-(113, '45', '2022-06-07 00:00:00', 'item name 24', 'category_02', 'location_01', '48.00', 1),
-(114, '45', '2022-06-07 00:00:00', 'item name 23', 'category_01', 'location_02', '5.00', 1),
-(115, '45', '2022-06-07 00:00:00', 'item name 23', 'category_02', 'location_01', '56.00', 1),
-(116, '45', '2022-06-07 00:00:00', 'item name 23', 'category_01', 'location_02', '0.00', 1);
+(0, '411b45823becd', '2022-11-06 00:00:00', 'item name 25', '1', '3', '58.00', 0);
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Table structure for table `ds_crud_locations`
 --
 
---
--- Indexes for table `ds_crud_items`
---
-ALTER TABLE `ds_crud_items`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `item_id` (`item_id`);
+CREATE TABLE `ds_crud_locations` (
+  `id` int(11) NOT NULL,
+  `location` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Dumping data for table `ds_crud_locations`
 --
 
---
--- AUTO_INCREMENT for table `ds_crud_items`
---
-ALTER TABLE `ds_crud_items`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+INSERT INTO `ds_crud_locations` (`id`, `location`) VALUES
+(1, 'Warehouse A'),
+(2, 'Warehouse B'),
+(3, 'Warehouse C');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
