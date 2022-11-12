@@ -229,7 +229,6 @@ class CrudItems
                     $this->results['item_location'] = $this->item_location;
                     $this->results['item_price'] = $this->item_price;
                     $this->results['available'] = $this->available;
-                    return;
                 }
             } else if ($this->mode == "edit") {
 
@@ -257,24 +256,21 @@ class CrudItems
                     $this->results['item_location'] = $this->item_location;
                     $this->results['item_price'] = $this->item_price;
                     $this->results['available'] = $this->available;
-                    return;
                 } else {
                     $this->results['mode'] = "edit";
                     $this->results['status'] = "error";
                     $this->results['message']  = "Id is not defined.";
-                    return;
                 }
             } else {
                 $this->results['mode'] = "undefined";
                 $this->results['status'] = "error";
                 $this->results['message']  = "Mode is not defined.";
-                return;
             }
         } else {
             $this->results['status'] = $this->dbHandler->results['status'];
             $this->results['message']  = $this->dbHandler->results['message'];
-            return;
         }
+        return $this->results;
     }
 
     public function deleteRecord($id)

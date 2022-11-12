@@ -149,24 +149,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!empty($errors)){    
         $errors = $errors;
     } else {    
-        $postData = array(
-            "id" => $id,
-            "item_id" => $item_id,
-            "date_added" => $date_added,
-            "item_name" => $item_name,
-            "item_category" => $item_category,
-            "item_location" => $item_location,
-            "item_price" => $item_price,
-            "available" => $available,
-            "mode" => $mode
-        ); 
 
         // Get the server side response
-        $response = submitForm($postData);
-        
-        //convert json to array
-        $response = json_decode($response, true); 
-        
+        $response = $crudItems->save($id);        
+              
         // for edit add old values        
         if($response['mode'] == "edit"){            
             $response['oldData'] = [
@@ -204,37 +190,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-
-function submitForm($postData)
-{
-    $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-    $url = $root."OOPCRUDAPP/process.php";
-    try{
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $url);						
-      
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-      curl_setopt($ch, CURLOPT_POST, TRUE);
-
-      $payload = json_encode(array("crudItems" => $postData));
-
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-      curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        "Content-Type: application/json"
-      ));
-
-      $response = curl_exec ($ch);
-      if ($response === false) {
-                throw new Exception(curl_error($ch), curl_errno($ch)); 
-            }			
-    }catch (Exception $e) {
-            $error_message = $e->getMessage();
-    }
-    curl_close($ch); 
-    return $response;
-}
-
-
