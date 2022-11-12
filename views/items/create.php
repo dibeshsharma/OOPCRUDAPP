@@ -11,6 +11,9 @@ $available = $crudItems->get_available();
 $formAction = $pathinfo == "index" ? "Add Items" : "Edit Items";
 $locations = $locations->get_all(); // $locations = new Locations();
 $categories = $categories->get_all(); // $categories = new Categories();
+// echo "<pre>";
+// var_dump($categories);
+// echo "</pre>";
 ?>
 <div class="col-md-9">
     <div class="row">
